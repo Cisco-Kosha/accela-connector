@@ -1,0 +1,83 @@
+{
+  "version": "2.0.0",
+  "fields": [
+    {
+      "field": "CLIENT_ID",
+      "displayName": "Application Client ID",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Application Client ID",
+      "example": "638197328473701703",
+      "helpSection": "The app ID value from Accela Developer Portal > My Apps."
+    },
+    {
+      "field": "CLIENT_SECRET",
+      "displayName": "Application Client Secret",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Application Client Secret",
+      "example": "a4ca38a1adb742c785a68c0e29361c6e",
+      "helpSection": "The app secret value from Accela Developer Portal > My Apps."
+    },
+    {
+      "field": "USERNAME",
+      "displayName": "Accela Account Username",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Accela Account Username",
+      "example": "admin",
+      "helpSection": "For a citizen app, the user name is the Civic ID.\n\n For an agency app, the user name is the Accela Automation account.\n\n"
+    },
+    {
+      "field": "PASSWORD",
+      "displayName": "Accela Account Password",
+      "type": "password",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Accela Account Password",
+      "example": "admin",
+      "helpSection": "The corresponding password of the Civic ID or Accela Automation account.\n\n"
+    },
+    {
+      "field": "ENVIRONMENT",
+      "displayName": "The Accela environment name, such as PROD and TEST",
+      "type": "String",
+      "minLength": 1,
+      "maxLength": 60,
+      "required": true,
+      "description": "The Accela environment name, such as PROD and TEST",
+      "example": "TEST",
+      "helpSection": "For a citizen app, the user name is the Civic ID.\n\n For an agency app, the user name is the Accela Automation account.\n\n"
+    },
+    {
+      "field": "SCOPE",
+      "displayName": "Scopes needed to request from Accela API Server",
+      "type": "password",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Scopes needed to request from Accela API Server",
+      "example": "get_records",
+      "helpSection": "The value of the scope parameter is expressed as a list of space-delimited, case-sensitive strings. The strings are defined by the authorization server. If the value contains multiple space-delimited strings, their order does not matter, and each string adds an additional access range to the requested scope."
+    },
+    {
+      "field": "SERVER_URL",
+      "displayName": "Accela API URL",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "Accela API URL",
+      "default": "https://apis.accela.com",
+      "example": "https://apis.accela.com",
+      "helpSection": "Accela API URL"
+    }
+  ]
+}
