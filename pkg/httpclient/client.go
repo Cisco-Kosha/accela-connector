@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strings"
 	"time"
 
 	url2 "net/url"
@@ -19,8 +18,8 @@ func makePasswordCredentialsReq(method, url string, body interface{}, log logger
 
 	var req *http.Request
 	if body != nil {
-		s := body.(string)
-		req, _ = http.NewRequest(method, url, bytes.NewBuffer([]byte(s)))
+		bytes1, _ := body.(string)
+		req, _ = http.NewRequest(method, url, bytes.NewBuffer([]byte(bytes1)))
 	} else {
 		req, _ = http.NewRequest(method, url, nil)
 	}
@@ -46,6 +45,7 @@ func makePasswordCredentialsReq(method, url string, body interface{}, log logger
 }
 
 func setOauth2Header(newReq *http.Request, tokenMap map[string]string) {
+	fmt.Println(tokenMap["access_token"])
 	newReq.Header.Set("Authorization", tokenMap["access_token"])
 	newReq.Header.Set("Content-Type", "application/json")
 	newReq.Header.Set("Accept", "application/json")
@@ -125,17 +125,18 @@ func MakeHttpCall(headers map[string]string, consumerId, consumerSecret, method,
 	return nil, http.StatusInternalServerError, fmt.Errorf("token invalid")
 }
 
-func GenerateToken(clientId, clientSecret, username, password, scopes, env, serverUrl string, log logger.Logger) (string, string, error) {
+func GenerateToken(clientId, clientSecret, username, password, scopes, env, serverUrl string, log logger.Logger) (string, int, error) {
 	// token is not generated, or is invalid so get new token
-	grantType := "grant_type=password"
+	grantType := "password"
 	token, expiresIn, _ := getToken(clientId, clientSecret, username, password, scopes, env, serverUrl, log, grantType, nil)
 	if token == "" {
-		return "", "", fmt.Errorf("error generating token")
+		return "", 0, fmt.Errorf("error generating token")
 	}
 	return token, expiresIn, nil
 }
 
-func getToken(clientId, clientSecret, username, password, scopes, env, serverUrl string, log logger.Logger, grantType string, body interface{}) (string, string, int) {
+func getToken(clientId, clientSecret, username, password, scopes, env, serverUrl string, log logger.Logger,
+	grantType string, body interface{}) (string, int, int) {
 
 	var tokenResponse models.AccessToken
 
@@ -149,19 +150,20 @@ func getToken(clientId, clientSecret, username, password, scopes, env, serverUrl
 	data.Add("scope", scopes)
 	data.Add("environment", env)
 	data.Add("grant_type", grantType)
+	data.Add("agency_name", "NULLISLAND")
 
 	encodedData := data.Encode()
 
-	res, _ := makePasswordCredentialsReq("POST", url, strings.NewReader(encodedData), log)
+	res, _ := makePasswordCredentialsReq("POST", url, encodedData, log)
 	if string(res) == "" {
-		return "", "", 500
+		return "", 0, 500
 	}
 	// Convert response body to target struct
 	err := json.Unmarshal(res, &tokenResponse)
 	if err != nil {
 		log.Error("Unable to parse auth token response as json")
 		log.Error(err)
-		return "", "", 500
+		return "", 0, 500
 	}
 	return tokenResponse.AccessToken, tokenResponse.ExpiresIn, 200
 }

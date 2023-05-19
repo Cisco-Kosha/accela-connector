@@ -5,6 +5,7 @@ import (
 	"github.com/kosha/accela-connector/pkg/httpclient"
 	"github.com/kosha/accela-connector/pkg/logger"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -97,7 +98,8 @@ func (a *App) commonMiddleware(log logger.Logger) http.Handler {
 func (a *App) getToken(clientId, clientSecret, username, password, scope, env, serverUrl string, log logger.Logger) string {
 	token, expiresIn, _ := httpclient.GenerateToken(clientId, clientSecret, username, password, scope, env, serverUrl, log)
 
-	duration, _ := time.ParseDuration(expiresIn + "s")
+	s := strconv.Itoa(expiresIn)
+	duration, _ := time.ParseDuration(s + "s")
 
 	a.TokenMap[clientId] = &TokenExpires{
 		AccessToken: token,
