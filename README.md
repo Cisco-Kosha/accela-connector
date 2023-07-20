@@ -60,3 +60,9 @@ To authenticate when provisioning the Kosha Accela connector, you need your:
 All connectors Kosha shares on the marketplace are open source. We believe in fostering collaboration and open development. Everyone is welcome to contribute their ideas, improvements, and feedback for any Kosha connector. We encourage community engagement and appreciate any contributions that align with our goals of an open and collaborative API management platform.
 
 Refer to the contribution guidelines for details.
+
+## Contributing
+
+Pull requests and bug reports are welcome.
+
+For larger changes, please create an issue in GitHub first to discuss your proposed changes and their possible implications.
